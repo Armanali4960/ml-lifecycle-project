@@ -3,8 +3,8 @@ from pydantic import BaseModel
 import numpy as np
 import joblib
 
-# Initialize FastAPI app
-app = FastAPI()
+# 👇 explicitly enable docs (safe)
+app = FastAPI(docs_url="/docs", redoc_url="/redoc")
 
 # Load trained model
 model = joblib.load("model.pkl")
@@ -22,14 +22,8 @@ def home():
 @app.post("/predict")
 def predict(data: InputData):
     try:
-        # Convert input to numpy array
         arr = np.array(data.features).reshape(1, -1)
-
-        # Make prediction
         prediction = model.predict(arr)
-
-        # Return result
         return {"prediction": prediction.tolist()}
-
     except Exception as e:
         return {"error": str(e)}
