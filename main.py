@@ -1,24 +1,23 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import joblib
 import numpy as np
+import joblib
 
-# ✅ MUST come first
 app = FastAPI()
 
-# ✅ Load model
+# Load model
 model = joblib.load("model.pkl")
 
-# ✅ Input schema
+# Input schema
 class InputData(BaseModel):
     features: list
 
-# ✅ Home route
+# Home route
 @app.get("/")
 def home():
     return {"message": "ML API is running 🚀"}
 
-# ✅ Predict route
+# Predict route
 @app.post("/predict")
 def predict(data: InputData):
     try:
